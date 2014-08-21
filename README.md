@@ -1,7 +1,7 @@
 Outclick
 ========
 
-Trigger callback, when click outside element
+Trigger callback, when click outside element.
 
 Usage
 -----
@@ -16,7 +16,7 @@ It is also possible to pass related objects. When you click on related object, a
 
 ```
 $(element).outclick({ 
- callback: function() { $(this).hide() }
+ callback: function() { $(this).hide() },
  related: [$(element1), $(element2)]
 });
 ```

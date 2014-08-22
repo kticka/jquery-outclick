@@ -10,9 +10,9 @@ class Outclick
     execute = false
     $.each @objects, (index, el) =>
       if @check(el.container, e)
-        if el.relations.length < 1 then execute = true
+        if el.related.length < 1 then execute = true
         else 
-          $.each el.relations, (index, relation) =>
+          $.each el.related, (index, relation) =>
             if @check(relation, e)
               execute = true
             else
@@ -24,9 +24,9 @@ class Outclick
 outclick = new Outclick
 
 $.fn.outclick = (options = {}) -> 
-  options.relations ||= []
+  options.related ||= []
   options.callback  ||= => @hide()
-  outclick.objects.push { container: @, relations: options.relations, callback: options.callback }
+  outclick.objects.push { container: @, related: options.related, callback: options.callback }
 
 $(document).mouseup (e) =>
   outclick.trigger(e)

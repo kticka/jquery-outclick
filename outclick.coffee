@@ -28,5 +28,13 @@ $.fn.outclick = (options = {}) ->
   options.callback  ||= => @hide()
   outclick.objects.push { container: @, related: options.related, callback: options.callback }
 
+$.fn.outclickStop = ->
+  items = $.grep outclick.objects, (e) => e.container.is(@)
+  if (items.length > 0)
+    item = items[0]
+    index = $.inArray(item, outclick.objects)
+    if (index > -1)
+      outclick.objects.splice(index, 1)
+
 $(document).mouseup (e) =>
   outclick.trigger(e)

@@ -1,24 +1,19 @@
-(function() {
-  var Outclick, outclick,
-    _this = this;
+var Outclick, outclick;
 
-  Outclick = (function() {
+Outclick = (function() {
+  function Outclick() {
+    this.objects = [];
+  }
 
-    Outclick.name = 'Outclick';
+  Outclick.prototype.check = function(element, event) {
+    return !element.is(event.target) && element.has(event.target).length === 0;
+  };
 
-    function Outclick() {
-      this.objects = [];
-    }
-
-    Outclick.prototype.check = function(element, event) {
-      return !element.is(event.target) && element.has(event.target).length === 0;
-    };
-
-    Outclick.prototype.trigger = function(e) {
-      var execute,
-        _this = this;
-      execute = false;
-      return $.each(this.objects, function(index, el) {
+  Outclick.prototype.trigger = function(e) {
+    var execute;
+    execute = false;
+    return $.each(this.objects, (function(_this) {
+      return function(index, el) {
         if (_this.check(el.container, e)) {
           if (el.related.length < 1) {
             execute = true;
@@ -36,33 +31,51 @@
             return el.callback.call(el.container);
           }
         }
-      });
-    };
-
-    return Outclick;
-
-  })();
-
-  outclick = new Outclick;
-
-  $.fn.outclick = function(options) {
-    var _this = this;
-    if (options == null) {
-      options = {};
-    }
-    options.related || (options.related = []);
-    options.callback || (options.callback = function() {
-      return _this.hide();
-    });
-    return outclick.objects.push({
-      container: this,
-      related: options.related,
-      callback: options.callback
-    });
+      };
+    })(this));
   };
 
-  $(document).mouseup(function(e) {
-    return outclick.trigger(e);
-  });
+  return Outclick;
 
-}).call(this);
+})();
+
+outclick = new Outclick;
+
+$.fn.outclick = function(options) {
+  if (options == null) {
+    options = {};
+  }
+  options.related || (options.related = []);
+  options.callback || (options.callback = (function(_this) {
+    return function() {
+      return _this.hide();
+    };
+  })(this));
+  return outclick.objects.push({
+    container: this,
+    related: options.related,
+    callback: options.callback
+  });
+};
+
+$.fn.outclickStop = function() {
+  var index, item, items;
+  items = $.grep(outclick.objects, (function(_this) {
+    return function(e) {
+      return e.container.is(_this);
+    };
+  })(this));
+  if (items.length > 0) {
+    item = items[0];
+    index = $.inArray(item, outclick.objects);
+    if (index > -1) {
+      return outclick.objects.splice(index, 1);
+    }
+  }
+};
+
+$(document).mouseup((function(_this) {
+  return function(e) {
+    return outclick.trigger(e);
+  };
+})(this));

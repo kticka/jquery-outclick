@@ -1,40 +1,32 @@
-class Outclick 
+$.outclick =
+	
+	instances: []
 
-  constructor: ->
-    @objects = []
+	trigger: (event) ->
+		$.each $.outclick.instances, (index, instance) ->
+			if $.outclick.outside(instance.element, event.target)
+				if typeof instance.callback == 'function'
+					instance.callback.call(instance.element)
+		
+	create: (element, options = [], callback) ->
+		instance = { element: element, callback: callback }
+		@.instances.push {element: element, options: options, callback: callback }
 
-  check: (element, event) ->
-    not element.is(event.target) and element.has(event.target).length is 0
+	enable: ->
+		$(document).bind 'click.outclick', @trigger
 
-  trigger: (e) ->
-    execute = false
-    $.each @objects, (index, el) =>
-      if @check(el.container, e)
-        if el.related.length < 1 then execute = true
-        else 
-          $.each el.related, (index, relation) =>
-            if @check(relation, e)
-              execute = true
-            else
-              execute = false
-              false
-        el.callback.call(el.container) if execute  
+	disable: ->
+		$(document).unbind 'click.outclick'
 
+	reset: ->
+		$.outclick.disable()
+		$.outclick.enable()
 
-outclick = new Outclick
+	outside: (element, target) ->
+		not element.is(event.target) and element.has(event.target).length is 0
+	
 
-$.fn.outclick = (options = {}) -> 
-  options.related ||= []
-  options.callback  ||= => @hide()
-  outclick.objects.push { container: @, related: options.related, callback: options.callback }
-
-$.fn.outclickStop = ->
-  items = $.grep outclick.objects, (e) => e.container.is(@)
-  if (items.length > 0)
-    item = items[0]
-    index = $.inArray(item, outclick.objects)
-    if (index > -1)
-      outclick.objects.splice(index, 1)
-
-$(document).mouseup (e) =>
-  outclick.trigger(e)
+$.fn.outclick = (callback, options = []) ->
+	$.outclick.reset()
+	$.outclick.create(@, options, callback)
+	return @

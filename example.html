@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<style>
+			.blue { background: blue; }
+			.red { background: red; }
+			.green { background: green; }
+			.yellow { background: yellow; }
+			.box { width: 50px; height: 50px; margin-right: 10px; float: left; text-align: center; line-height: 50px; }
+			.box.last { margin: 0px; }
+			.clear { clear: both; }
+		</style>
+		
+		<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script src="outclick.min.js"></script>
+	</head>
+
+	<body>
+		<div style="width: 470px; margin: 200px auto 0px;">
+				<div class="box green"></div>
+				<div class="box green"></div>
+				<div class="box red"></div>
+				<div class="box red"></div>
+				<div class="box blue"></div>
+				<div class="box blue"></div>
+				<div class="box yellow"></div>
+				<div class="box yellow last"></div>
+				<div class="clear" style=""></div>
+
+				<p>
+					$('.green').outclick(function() {<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;$(this).effect('bounce');<br>
+					});
+				</p>
+				<p>
+
+					$('.red, .blue').outclick(function() {<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;$(this).effect('pulsate');<br>
+					});
+				</p>
+		</div>
+
+
+	</body>
+	<script>
+		$('.green').outclick(function() {
+			$(this).stop().effect('bounce');
+		})
+		$('.red, .blue').stop().outclick(function() {
+			$(this).effect('pulsate');
+		})
+	</script>
+</html>

@@ -13,10 +13,10 @@ $.outclick =
 		@.instances.push {element: element, options: options, callback: callback }
 
 	enable: ->
-		$(document).bind 'click.outclick', @trigger
+		$(document).on 'mouseup.outclick', @trigger
 
 	disable: ->
-		$(document).unbind 'click.outclick'
+		$(document).off 'mouseup.outclick'
 
 	reset: ->
 		$.outclick.disable()

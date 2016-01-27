@@ -47,10 +47,10 @@ $.outclick = {
     });
   },
   enable: function() {
-    return $(document).bind('click.outclick', this.trigger);
+    return $(document).on('mouseup.outclick', this.trigger);
   },
   disable: function() {
-    return $(document).unbind('click.outclick');
+    return $(document).off('mouseup.outclick');
   },
   reset: function() {
     $.outclick.disable();

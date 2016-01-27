@@ -23,7 +23,7 @@ $.outclick =
 		$.outclick.enable()
 
 	outside: (element, target) ->
-		not element.is(event.target) and element.has(event.target).length is 0
+		not element.is(target) and element.has(target).length is 0
 	
 
 $.fn.outclick = (callback, options = []) ->

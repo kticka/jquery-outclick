@@ -57,7 +57,7 @@ $.outclick = {
     return $.outclick.enable();
   },
   outside: function(element, target) {
-    return !element.is(event.target) && element.has(event.target).length === 0;
+    return !element.is(target) && element.has(target).length === 0;
   }
 };
 
